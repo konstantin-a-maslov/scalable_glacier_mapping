@@ -150,39 +150,10 @@ class UpConv(tf.keras.layers.Layer):
 
 
 class FusionBlock(tf.keras.layers.Layer):
-    def __init__(self, n_filters, spatial_dropout=0, inference_dropout=False):
-        super(FusionBlock, self).__init__()
-        self.n_filters = n_filters
-        self.spatial_dropout = spatial_dropout
-        self.inference_dropout = inference_dropout
-
-    def build(self, input_shape):
-        self.branches = []
-        for _ in input_shape:
-            self.branches.append(
-                ConvBatchNormAct_x2(
-                    self.n_filters,
-                    spatial_dropout=self.spatial_dropout,
-                    inference_dropout=self.inference_dropout
-                )
-            )
-
-    def call(self, xs):
-        branch_outputs = []
-        for x, branch in zip(xs, self.branches):
-            branch_outputs.append(branch(x))
-        y = tf.math.add_n(branch_outputs)
-        return y
-
-
-FusionBlock_design1 = FusionBlock
-
-
-class FusionBlock_design2(tf.keras.layers.Layer):
     def __init__(
         self, n_filters, activation=tf.nn.leaky_relu, spatial_dropout=0, inference_dropout=False
     ):
-        super(FusionBlock_design2, self).__init__()
+        super(FusionBlock, self).__init__()
         self.n_filters = n_filters
         self.activation = activation
         self.spatial_dropout = spatial_dropout
@@ -228,121 +199,6 @@ class FusionBlock_design2(tf.keras.layers.Layer):
         return y
 
 
-class FusionBlock_design3(tf.keras.layers.Layer):
-    def __init__(self, n_filters, spatial_dropout=0, inference_dropout=False):
-        super(FusionBlock_design3, self).__init__()
-        self.n_filters = n_filters
-        self.spatial_dropout = spatial_dropout
-        self.inference_dropout = inference_dropout
-
-    def build(self, input_shape):
-        self.conv_branches = []
-        self.excitation_pools = []
-        self.excitation_dense1 = tf.keras.layers.Dense(
-            self.n_filters, activation=tf.nn.leaky_relu
-        )
-        self.excitation_denses2 = []
-
-        for _ in input_shape:
-            self.conv_branches.append(
-                ConvBatchNormAct_x2(
-                    self.n_filters,
-                    spatial_dropout=self.spatial_dropout,
-                    inference_dropout=self.inference_dropout
-                )
-            )
-            self.excitation_pools.append(
-                tf.keras.layers.GlobalAveragePooling2D(keepdims=True)
-            )
-            self.excitation_denses2.append(
-                tf.keras.layers.Dense(self.n_filters, activation=tf.nn.sigmoid)
-            )
-
-    def call(self, xs):
-        convs = []
-        pools = []
-        for x, conv, pool in zip(xs, self.conv_branches, self.excitation_pools):
-            _conv = conv(x)
-            _pool = pool(_conv)
-            convs.append(_conv)
-            pools.append(_pool)
-        pools_concat = tf.concat(pools, axis=-1)
-        dense1 = self.excitation_dense1(pools_concat)
-        outputs = []
-        for x, dense2 in zip(convs, self.excitation_denses2):
-            _dense2 = dense2(dense1)
-            outputs.append(x * _dense2)
-        y = tf.math.add_n(outputs)
-        return y
-
-
-class FusionBlock_design4(tf.keras.layers.Layer):
-    def __init__(self, n_filters, spatial_dropout=0, inference_dropout=False):
-        super(FusionBlock_design4, self).__init__()
-        self.n_filters = n_filters
-        self.spatial_dropout = spatial_dropout
-        self.inference_dropout = inference_dropout
-
-    def build(self, input_shape):
-        self.branches = []
-        self.dense = tf.keras.layers.Dense(self.n_filters, use_bias=False)
-        for _ in input_shape:
-            self.branches.append(
-                ConvBatchNormAct_x2(
-                    self.n_filters,
-                    spatial_dropout=self.spatial_dropout,
-                    inference_dropout=self.inference_dropout
-                )
-            )
-
-    def call(self, xs):
-        branch_outputs = []
-        for x, branch in zip(xs, self.branches):
-            branch_outputs.append(branch(x))
-        y = tf.concat(branch_outputs, axis=-1)
-        y = self.dense(y)
-        return y
-
-
-class FusionBlock_design5(tf.keras.layers.Layer):
-    def __init__(self, n_filters, spatial_dropout=0, inference_dropout=False):
-        super(FusionBlock_design5, self).__init__()
-        self.n_filters = n_filters
-        self.spatial_dropout = spatial_dropout
-        self.inference_dropout = inference_dropout
-
-    def build(self, input_shape):
-        self.pool = tf.keras.layers.GlobalAveragePooling2D(keepdims=True)
-        self.dense1 = tf.keras.layers.Dense(self.n_filters, activation=tf.nn.leaky_relu)
-        self.dense2 = tf.keras.layers.Dense(
-            self.n_filters * len(input_shape), activation=tf.nn.sigmoid
-        )
-
-        self.branches = []
-        for _ in input_shape:
-            self.branches.append(
-                ConvBatchNormAct_x2(
-                    self.n_filters,
-                    spatial_dropout=self.spatial_dropout,
-                    inference_dropout=self.inference_dropout
-                )
-            )
-
-    def call(self, xs):
-        branch_outputs = []
-        for x, branch in zip(xs, self.branches):
-            branch_outputs.append(branch(x))
-        concat = tf.concat(branch_outputs, axis=-1)
-        pool = self.pool(concat)
-        dense1 = self.dense1(pool)
-        dense2 = self.dense2(dense1)
-        concat = concat * dense2 # to ensure gradient flow through dense2
-        dense2 = tf.reshape(dense2, [-1, self.n_filters * len(xs)])
-        _, indices = tf.nn.top_k(dense2, k=self.n_filters)
-        y = tf.gather(concat, indices, axis=-1, batch_dims=1)
-        return y
-
-
 class ConvBatchNormAct_series(tf.keras.layers.Layer):
     def __init__(
         self, n_filters_list, kernel_size=3, dilation_rate=1, use_bias=True, padding="same", 
@@ -378,32 +234,6 @@ class ConvBatchNormAct_series(tf.keras.layers.Layer):
         return y
 
 
-class FusionBlock_v2(tf.keras.layers.Layer):
-    def __init__(self, n_filters, spatial_dropout=0, inference_dropout=False):
-        super(FusionBlock_v2, self).__init__()
-        self.n_filters = n_filters
-        self.spatial_dropout = spatial_dropout
-        self.inference_dropout = inference_dropout
-
-    def build(self, input_shape):
-        self.branches = []
-        for _ in input_shape:
-            self.branches.append(
-                ConvBatchNormAct_series(
-                    self.n_filters,
-                    spatial_dropout=self.spatial_dropout,
-                    inference_dropout=self.inference_dropout
-                )
-            )
-
-    def call(self, xs):
-        branch_outputs = []
-        for x, branch in zip(xs, self.branches):
-            branch_outputs.append(branch(x))
-        y = tf.math.add_n(branch_outputs)
-        return y
-
-
 class LocationEncodingBlock(tf.keras.layers.Layer):
     def __init__(
         self, n_units, activation=tf.keras.layers.LeakyReLU, dropout=0, inference_dropout=False
@@ -427,34 +257,6 @@ class LocationEncodingBlock(tf.keras.layers.Layer):
         y = self.dense2(y)
         y = self.bn2(y)
         y = self.act2(y)
-        if self.dropout_rate:
-            y = self.dropout(y, training=self.inference_dropout)
-        return y
-
-
-class LocationEncodingBlock_v2(tf.keras.layers.Layer):
-    def __init__(
-        self, n_units_list, activation=tf.keras.layers.LeakyReLU, dropout=0, inference_dropout=False
-    ):
-        super(LocationEncodingBlock_v2, self).__init__()
-        self.denses = []
-        self.bns = []
-        self.acts = []
-        for n_units in n_units_list:
-            self.denses.append(tf.keras.layers.Dense(n_units))
-            self.bns.append(tf.keras.layers.BatchNormalization())
-            self.acts.append(activation())
-        self.dropout_rate = dropout
-        if dropout:
-            self.dropout = tf.keras.layers.Dropout(dropout)
-            self.inference_dropout = inference_dropout
-
-    def call(self, x):
-        y = x
-        for dense, bn, act in zip(self.denses, self.bns, self.acts):
-            y = dense(y)
-            y = bn(y)
-            y = act(y)
         if self.dropout_rate:
             y = self.dropout(y, training=self.inference_dropout)
         return y

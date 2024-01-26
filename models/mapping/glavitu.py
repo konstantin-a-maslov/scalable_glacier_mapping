@@ -1,6 +1,5 @@
 import tensorflow as tf
 import layers.general
-import layers.hybrids
 import models.mapping
 import models.misc
 
@@ -14,7 +13,7 @@ def GlaViTU(
         input_layer = tf.keras.layers.Input(input_shape, name=input_name)
         inputs.append(input_layer)
 
-    fused = layers.general.FusionBlock_design2( 
+    fused = layers.general.FusionBlock( 
         64, 
         spatial_dropout=dropout, 
         inference_dropout=inference_dropout
