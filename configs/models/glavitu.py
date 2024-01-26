@@ -9,8 +9,6 @@ inference_dropout = False
 use_deepsupervision = True
 
 model_builder, model_args = models.mapping.GlaViTU, {
-    "fusion_activation": tf.nn.leaky_relu,
-    "resunet_activation": tf.nn.leaky_relu,
     "last_activation": "softmax", 
     "dropout": dropout, 
     "inference_dropout": inference_dropout, 

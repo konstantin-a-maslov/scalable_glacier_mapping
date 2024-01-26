@@ -12,7 +12,7 @@ def DeepLabV3Plus(
         input_layer = tf.keras.layers.Input(input_shape, name=input_name)
         inputs.append(input_layer)
 
-    fused = layers.general.FusionBlock_design2(
+    fused = layers.general.FusionBlock(
         64, 
         spatial_dropout=dropout, 
         inference_dropout=inference_dropout,

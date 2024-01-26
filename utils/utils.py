@@ -4,9 +4,11 @@ import argparse
 
 
 def update_config(
-    config, name=None, features=None, regions=None, subregions=None, labels=None, weights_path=None,
-    dem_shift=None, subtract_dem=None, contrast=None, occlusion=None, noise=None, label_smoothing=None
+    config, model=None, name=None, features=None, regions=None, subregions=None, labels=None, 
+    weights_path=None, contrast=None, occlusion=None, noise=None, label_smoothing=None
 ):
+    if model:
+        set_model(config, model)
     if name:
         set_model_name(config, name)
     if features:
@@ -21,10 +23,6 @@ def update_config(
         set_weights_path(config, weights_path)
     if contrast:
         add_contrast_augmentation(config)
-    if dem_shift:
-        add_dem_shift_augmentation(config, dem_shift)
-    if subtract_dem:
-        subtract_dem_mean(config)
     if occlusion:
         add_feature_occlusion(config)
     if noise:
@@ -35,7 +33,9 @@ def update_config(
 
 def update_config_from_cli(config):
     parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--model", default="glavitu", choices=["glavitu", "deeplab"], help="Model architecture")
     parser.add_argument("-n", "--name", help="Model name")
+
     parser.add_argument("-f", "--features", default=["optical", "dem"], nargs="*", help="Training features")
     parser.add_argument("-r", "--regions", nargs="*", help="Regions of interest")
     parser.add_argument("-sr", "--subregions", nargs="*", help="Subregions of interest")
@@ -43,8 +43,6 @@ def update_config_from_cli(config):
     parser.add_argument("-w", "--weights_path", help="Path to starting point weights")
 
     parser.add_argument("--contrast", action="store_true", help="Use of random gamma correction augmentation")
-    parser.add_argument("--dem_shift", type=float, help="Add random uniform shift to elevation as augmentation")
-    parser.add_argument("--subtract_dem_mean", action="store_true", help="Subtract elevation mean at patch level")
     parser.add_argument("--occlusion", action="store_true", help="Use of feature occlusion")
     parser.add_argument("--noise", action="store_true", help="Use of gaussian noise/shift augmentation")
 
@@ -54,6 +52,7 @@ def update_config_from_cli(config):
     config.cli_args = args
     update_config(
         config, 
+        model=args.model,
         name=args.name,
         features=args.features,
         regions=args.regions,
@@ -61,8 +60,6 @@ def update_config_from_cli(config):
         labels=args.labels,
         weights_path=args.weights_path,
         contrast=args.contrast,
-        dem_shift=args.dem_shift,
-        subtract_dem=args.subtract_dem_mean,
         occlusion=args.occlusion,
         noise=args.noise,
         label_smoothing=args.label_smoothing,
@@ -115,6 +112,18 @@ def set_model_name(config, model_name):
     config.model.model_args.update({
         "name": model_name 
     })
+
+
+def set_model(config, model):
+    if model == "glavitu":
+        pass # default choice
+
+    elif model == "deeplab":
+        import configs.models.deeplab
+        config.model = configs.models.deeplab
+    
+    else:
+        raise NotImplementedError()
 
 
 def set_features(config, features):
@@ -186,25 +195,6 @@ def add_contrast_augmentation(config, gamma_l=0.8, gamma_r=1.2):
     )
     config.data.train_plugins += [contrast_augmentation]
 
-
-def add_dem_shift_augmentation(config, magnitude=0.5):
-    dem_shift_augmentation = dataloaders.Augmentation(
-        [
-            dataloaders.transformations.add_dem_shift(magnitude),
-        ]
-    )
-    config.data.train_plugins += [dem_shift_augmentation]
-
-
-def subtract_dem_mean(config):
-    subtract_dem_mean_transformation = dataloaders.Augmentation(
-        [
-            dataloaders.transformations.subtract_dem_mean(),
-        ]
-    )
-    config.data.train_plugins += [subtract_dem_mean_transformation]
-    config.data.val_plugins += [subtract_dem_mean_transformation]
-
     
 def add_feature_occlusion(config, max_obstruction_size=192):
     features = config.data.features
@@ -227,6 +217,6 @@ def add_noise_augmentation(config, shift=0.025, noise=0.005):
     config.data.train_plugins += [noise_augmentation]
 
 
-def add_label_smoothing(config, smoothing=0.0):
+def add_label_smoothing(config, smoothing=0.1):
     label_smoothing = dataloaders.AddLabelSmoothing(smoothing=smoothing)
     config.data.train_plugins += [label_smoothing]

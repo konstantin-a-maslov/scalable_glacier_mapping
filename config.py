@@ -2,7 +2,6 @@ import configs.data as data
 import configs.models.glavitu as model
 import configs.training as training
 import configs.finetuning as finetuning
-import configs.swa as swa
 
 
 cli_args = None
@@ -12,18 +11,6 @@ use_region_encoding = False
 use_coordinate_encoding = False
 use_sincos_coordinate_encoding = False
 
-#####################################################################
-# import dataloaders
-# import dataloaders.filters
-# data.train_plugins += [
-#     # dataloaders.TileFilter([lambda tile_group: tile_group.attrs["region"] == "HMA"])
-#     dataloaders.TileFilter([dataloaders.filters.region_filter({"ALP"})])
-# ]
-# data.val_plugins += [
-#     # dataloaders.TileFilter([lambda tile_group: tile_group.attrs["region"] == "HMA"])
-#     dataloaders.TileFilter([dataloaders.filters.region_filter({"ALP"})])
-# ]
-#####################################################################
 
 #####################################################################
 if [use_region_encoding, use_coordinate_encoding, use_sincos_coordinate_encoding].count(True) > 1:
