@@ -7,7 +7,7 @@
 <br/>
 
 
-The repository is in progress.
+**The repository is in progress**.
 
 TODO: Repository/paper description.
 
@@ -32,7 +32,7 @@ conda create -n ... -c conda-forge
 
 TODO: Add instructions to the subsections.
 
-### Training a model
+### Training/finetuning a model
 
 ```
 python train.py ...
