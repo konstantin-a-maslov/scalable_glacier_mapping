@@ -23,6 +23,10 @@ The dataset associated with the paper will be uploaded to [the DANS repository](
 
 TODO: Share the dataset link, make a subsample (10%?) of the dataset for the demonstration purposes (and share via gdrive?). 
 
+- Dataset
+- Demo dataset
+- Standalone dataset
+
 
 ## Installation 
 
@@ -42,7 +46,7 @@ We recommend using the [Anaconda](https://www.anaconda.com/download) or [Minicon
 After installing one of them, one can use the `conda` package manager to install the required libraries in a new environment called `massive-tf` and activate it by running
 
 ```
-conda create -n massive-tf tensorflow h5py scikit-learn rioxarray geopandas tqdm -c conda-forge
+conda create -n massive-tf "tensorflow>=2.7" h5py scikit-learn rioxarray geopandas jupyterlab tqdm -c conda-forge
 conda activate massive-tf
 ```
 
@@ -50,14 +54,11 @@ We tested this configuration on Ubuntu 20.04 and Ubuntu 22.04 (see `env_ub2004.y
 We also expect it to work on any modern Linux distribution or Windows, given properly configured NVIDIA GPU drivers.
 
 
-
 ## Getting started
 
 TODO: Add instructions to the subsections.
 
 ### Adjusting configs
-
-
 
 ### Training/finetuning a model
 
@@ -74,14 +75,14 @@ TODO: Add instructions to the subsections.
 ### Evaluating on the test subset
 
 ```
-python evaluate.py ...
+(massive-tf) python evaluate.py ...
 ```
 
 ### Running on custom/standalone data
 
 ```
-python compile_features.py ...
-python deploy.py ...
+(massive-tf) python compile_features.py ...
+(massive-tf) python deploy.py ...
 ```
 
 ### Confidence calibration
@@ -95,7 +96,7 @@ TODO: Do via a jupyter notebook (refactor and upload).
 After that, simply run
 
 ```
-python deploy.py ... -bias <BIAS VECTOR> ... 
+(massive-tf) python deploy.py ... -bias <BIAS VECTOR> ... 
 ```
 
 
