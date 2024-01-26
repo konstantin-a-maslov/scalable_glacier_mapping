@@ -21,11 +21,29 @@ TODO: Share the dataset link, make a subsample (10%?) of the dataset for the dem
 
 ## Installation 
 
-TODO: Required hardware (technically, any might work, but nice GPU and RAM are the only reasonable options computationally), Anaconda/Miniconda, instructions with .yml files, instructions 'from scratch'.
+### Required hardware
+
+We recommend using a machine with at least 24 GB GPU RAM and 64 RAM. 
+Technically, any modern computer is suitable to run the provided code. 
+However, no GPU or not enough RAM can make the computational time unreasonably long (up to months and even years). 
+In case if your RAM is not enough to perform inference on your own data with our pretrained models, consider splitting it into smaller subareas. 
+If your machine lacks GPU RAM, you may consider reducing the batch size by modifying `batch_size = ...` in `configs/data.py` accordingly. 
+Please note, that altering the batch size can potentially change the expected performance of the models if you train them from scratch.
+
+
+### Instructions
+
+We recommend using the [Anaconda](https://www.anaconda.com/download) or [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) Python distributions. 
+After installing one of them, one can use the `conda` package manager to install the required libraries in a new environment called `massive-tf` and activate it by running
 
 ```
-conda create -n ... -c conda-forge
+conda create -n massive-tf tensorflow h5py scikit-learn rioxarray geopandas -c conda-forge
+conda activate massive-tf
 ```
+
+We tested this configuration on Ubuntu 20.04 and Ubuntu 22.04 (see `env_ub2004.yml` and `env_ub2204.yml` for tested dependencies). 
+We also expect it to work on any modern Linux distribution or Windows, given properly configured NVIDIA GPU drivers.
+
 
 
 ## Getting started
@@ -35,13 +53,13 @@ TODO: Add instructions to the subsections.
 ### Training/finetuning a model
 
 ```
-python train.py ...
+(massive-tf) python train.py ...
 ```
 
 ### Predicting on the test subset
 
 ```
-python predict.py ...
+(massive-tf) python predict.py ...
 ```
 
 ### Evaluating on the test subset
