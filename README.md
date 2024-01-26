@@ -11,7 +11,10 @@
 
 ![GlaViTU](assets/glavitu.png)
 
-TODO: Repository/paper description.
+This GitHub repository is dedicated to the suite of tools and techniques developed in our study "Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data." 
+It provides access to our developed convolutional-transformer deep learning model, Glacier-VisionTransformer-U-Net (GlaViTU), and the multimodal dataset, including optical and SAR satellite data, used for our analyses. 
+The repository is structured to facilitate a deeper understanding of our methodology in global-scale glacier mapping, offering insights into our model training and generalization strategies. 
+By sharing these resources, we aim to support further research and collaboration in the field of environmental monitoring and glacier mapping using artificial intelligence.
 
 
 ## Datasets
