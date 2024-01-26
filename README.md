@@ -30,7 +30,7 @@ Technically, any modern computer is suitable to run the provided code.
 However, no GPU or not enough RAM can make the computational time unreasonably long (up to months and even years). 
 In case if your RAM is not enough to perform inference on your own data with our pretrained models, consider splitting it into smaller subareas. 
 If your machine lacks GPU RAM, you may consider reducing the batch size by modifying `batch_size = ...` in `configs/data.py` accordingly. 
-Please note, that altering the batch size can potentially change the expected performance of the models if you train them from scratch.
+Please note that altering the batch size can potentially change the expected performance of the models if you train them from scratch.
 
 
 ### Instructions
@@ -51,6 +51,10 @@ We also expect it to work on any modern Linux distribution or Windows, given pro
 ## Getting started
 
 TODO: Add instructions to the subsections.
+
+### Adjusting configs
+
+
 
 ### Training/finetuning a model
 
@@ -104,7 +108,7 @@ This software is licensed under the [GNU General Public License v2](LICENSE).
 
 ## Citing
 
-If you use our datasets or models in your research, please use the following BibTeX entry.
+To cite the paper/repository, please use the following bib entry. 
 
 ```
 @article{towardsglobalglaciermapping2024,
