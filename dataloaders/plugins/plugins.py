@@ -50,19 +50,6 @@ class TileFilter(Plugin):
         return all(filter_outputs)
 
 
-class RemapNoData(Plugin):
-    def __init__(self, features, old_nodata, new_nodata):
-        self.features = features
-        self.old_nodata = old_nodata
-        self.new_nodata = new_nodata
-
-    def on_sampling(self, sample):
-        for feature in self.features:
-            mask = (sample[feature] == self.old_nodata)
-            sample[feature][mask] = self.new_nodata
-        return sample
-
-
 class Augmentation(Plugin):
     def __init__(self, transformations):
         self.transformations = transformations
