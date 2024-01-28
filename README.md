@@ -23,9 +23,9 @@ The dataset associated with the paper will be uploaded to [the DANS repository](
 
 TODO: Share the dataset link, make a subsample (10%?) of the dataset for the demonstration purposes (and share via gdrive?). 
 
-- Dataset
-- Demo dataset
-- Standalone dataset
+- [Main dataset](https://bit.ly/3UgEDgA)
+- [Demo dataset](https://bit.ly/49aVPIJ)
+- [Standalone dataset](https://bit.ly/48WUGoA)
 
 
 ## Installation 
