@@ -54,11 +54,6 @@ def main():
     )
 
     # model.summary()
-    # resunet = model.layers[5]
-    # resunet.summary()
-    # decoder = resunet.layers[2]
-    # decoder.summary()
-    # return
 
     compile_model(model)
     callbacks = config.training.get_callbacks(

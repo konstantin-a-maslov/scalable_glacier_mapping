@@ -4,13 +4,23 @@ import argparse
 
 
 def update_config(
-    config, model=None, name=None, features=None, regions=None, subregions=None, labels=None, 
-    weights_path=None, contrast=None, occlusion=None, noise=None, label_smoothing=None
+    config, model=None, name=None, region_encoding=None, coordinate_encoding=None, features=None, 
+    regions=None, subregions=None, labels=None, weights_path=None, contrast=None, occlusion=None, 
+    noise=None, label_smoothing=None
 ):
+    if region_encoding and coordinate_encoding:
+        raise NotImplementedError("Simultaneous region and coordinate encodings are not implemented!")
+    if model != "glavitu" and (region_encoding or coordinate_encoding):
+        raise NotImplementedError("Region/coordinate encoding is implemented only for GlaViTU!")
+
     if model:
         set_model(config, model)
     if name:
         set_model_name(config, name)
+    if region_encoding:
+        add_region_encoding(config)
+    if coordinate_encoding:
+        add_coordinate_encoding(config)
     if features:
         set_features(config, features)
     if regions:
@@ -36,6 +46,9 @@ def update_config_from_cli(config):
     parser.add_argument("-m", "--model", default="glavitu", choices=["glavitu", "deeplab"], help="Model architecture")
     parser.add_argument("-n", "--name", help="Model name")
 
+    parser.add_argument("--region_encoding", action="store_true", help="Use of region encoding")
+    parser.add_argument("--coordinate_encoding", action="store_true", help="Use of coordinate encoding")
+
     parser.add_argument("-f", "--features", default=["optical", "dem"], nargs="*", help="Training features")
     parser.add_argument("-r", "--regions", nargs="*", help="Regions of interest")
     parser.add_argument("-sr", "--subregions", nargs="*", help="Subregions of interest")
@@ -54,6 +67,8 @@ def update_config_from_cli(config):
         config, 
         model=args.model,
         name=args.name,
+        region_encoding=args.region_encoding,
+        coordinate_encoding=args.coordinate_encoding,
         features=args.features,
         regions=args.regions,
         subregions=args.subregions,
@@ -124,6 +139,33 @@ def set_model(config, model):
     
     else:
         raise NotImplementedError()
+
+
+def add_region_encoding(config):
+    config.data.train_plugins += [
+        dataloaders.AddRegionVector(),
+        dataloaders.Augmentation([
+            dataloaders.transformations.set_region_to_unknown(p=0.1)
+        ])
+    ]
+    config.data.val_plugins += [
+        dataloaders.AddRegionVector(),
+        dataloaders.RepeatWithMandatoryTransformations([
+            dataloaders.transformations.set_region_to_unknown(p=1.0)
+        ])
+    ]
+    config.model.model_args.update({
+        "use_location": True
+    })
+
+
+def add_coordinate_encoding(config):
+    config.data.train_plugins += [dataloaders.AddSinCosCoordinatesVector()]
+    config.data.val_plugins += [dataloaders.AddSinCosCoordinatesVector()]
+    config.model.model_args.update({
+        "use_location": True,
+        "location_size": 4
+    })
 
 
 def set_features(config, features):
