@@ -2,7 +2,7 @@
 
 [Konstantin A. Maslov](https://people.utwente.nl/k.a.maslov), [Claudio Persello](https://people.utwente.nl/c.persello), [Thomas Schellenberger](https://www.mn.uio.no/geo/english/people/aca/geohyd/thosche/), [Alfred Stein](https://people.utwente.nl/a.stein)
 
-[['Paper']()] [['Datasets'](#datasets)] [['BibTeX'](#citing)] 
+[['Paper'](https://arxiv.org/abs/2401.15113)] [['Datasets'](#datasets)] [['BibTeX'](#citing)] 
 
 <br/>
 
@@ -104,7 +104,7 @@ After that, simply run
 
 ## Pretrained models
 
-TODO: Share the weights of the pretrained models (in gdrive if github restrictions do not allow).
+TODO: Share the weights of the pretrained models (in gdrive).
 
 
 ## License
