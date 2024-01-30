@@ -104,7 +104,9 @@ After that, simply run
 
 ## Pretrained models
 
-TODO: Share the weights of the pretrained models (in gdrive).
+The pretrained models that were used to derive the results in the paper can be accessed [here](https://bit.ly/3HC4TdQ). 
+The file names follow the template `<MODEL NAME>_<STRATEGY>[_<REGIONS,>][_<DATA TRACK>]_weights.h5`. 
+We encourage you to try different options in your area of interest and share your results. 
 
 
 ## License
