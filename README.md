@@ -109,6 +109,11 @@ The file names follow the template `<MODEL NAME>_<STRATEGY>[_<REGIONS,>][_<DATA 
 We encourage you to try different options in your area of interest and share your results. 
 
 
+### Ice divides
+
+We moved the algorithms for ice divides reconstruction to [a different repository]().
+
+
 ## License
 
 This software is licensed under the [GNU General Public License v2](LICENSE).
@@ -118,7 +123,7 @@ This software is licensed under the [GNU General Public License v2](LICENSE).
 
 To cite the paper/repository, please use the following bib entry. 
 
-```
+<!-- TODO: Update BibTeX once published ```
 @article{towardsglobalglaciermapping2024,
     title={Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data},
     author={Maslov, Konstantin A. and Persello, Claudio and Schellenberger, Thomas and Stein, Alfred},
@@ -128,6 +133,16 @@ To cite the paper/repository, please use the following bib entry.
     number={},
     pages={},
     doi={}
+}
+``` -->
+```
+@article{towardsglobalglaciermapping2024,
+    title = {Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data.},
+    author = {Maslov, Konstantin A. and Persello, Claudio and Schellenberger, Thomas and Stein, Alfred},
+    doi = {10.48550/arXiv.2401.15113},    
+    url = {https://arxiv.org/abs/2401.15113},
+    year = {2024},
+    month = {1},
 }
 ```
 
