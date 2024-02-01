@@ -1,5 +1,6 @@
 import dataloaders
 import dataloaders.filters
+import warnings
 import argparse
 
 
@@ -28,7 +29,8 @@ def update_config(
     if subregions:
         set_subregions(config, subregions)
     if labels:
-        set_target_labels(config, labels)
+        warnings.warn("Setting labels is deprecated, change it in code manually if really intended.", DeprecationWarning)
+        # set_target_labels(config, labels)
     if weights_path:
         set_weights_path(config, weights_path)
     if contrast:
@@ -41,7 +43,7 @@ def update_config(
         add_label_smoothing(config, label_smoothing)
 
 
-def update_config_from_cli(config):
+def create_cli_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--model", default="glavitu", choices=["glavitu", "deeplab"], help="Model architecture")
     parser.add_argument("-n", "--name", help="Model name")
@@ -52,7 +54,7 @@ def update_config_from_cli(config):
     parser.add_argument("-f", "--features", default=["optical", "dem"], nargs="*", help="Training features")
     parser.add_argument("-r", "--regions", nargs="*", help="Regions of interest")
     parser.add_argument("-sr", "--subregions", nargs="*", help="Subregions of interest")
-    parser.add_argument("-l", "--labels", default="outlines", help="Name of target labels")
+    parser.add_argument("-l", "--labels", default="outlines", help="Name of target labels (DEPR)")
     parser.add_argument("-w", "--weights_path", help="Path to starting point weights")
 
     parser.add_argument("--contrast", action="store_true", help="Use of random gamma correction augmentation")
@@ -61,6 +63,11 @@ def update_config_from_cli(config):
 
     parser.add_argument("--label_smoothing", default=0.0, type=float, help="Label smoothing parameter")
 
+    return parser
+
+
+def update_config_from_cli(config):
+    parser = create_cli_parser()
     args = parser.parse_args()
     config.cli_args = args
     update_config(
