@@ -2,7 +2,7 @@
 
 [Konstantin A. Maslov](https://people.utwente.nl/k.a.maslov), [Claudio Persello](https://people.utwente.nl/c.persello), [Thomas Schellenberger](https://www.mn.uio.no/geo/english/people/aca/geohyd/thosche/), [Alfred Stein](https://people.utwente.nl/a.stein)
 
-[['Paper'](https://arxiv.org/abs/2401.15113)] [['Datasets'](#datasets)] [['BibTeX'](#citing)] 
+[[`Paper`](https://arxiv.org/abs/2401.15113)] [[`Datasets`](#datasets)] [[`BibTeX`](#citing)] 
 
 <br/>
 
@@ -109,7 +109,7 @@ The file names follow the template `<MODEL NAME>_<STRATEGY>[_<REGIONS,>][_<DATA 
 We encourage you to try different options in your area of interest and share your results. 
 
 
-### Ice divides
+## Ice divides
 
 We moved the algorithms for ice divides reconstruction to [a different repository]().
 
