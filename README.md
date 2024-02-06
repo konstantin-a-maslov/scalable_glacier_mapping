@@ -7,7 +7,7 @@
 <br/>
 
 
-**The repository is in progress**.
+**The repository is in progress.**
 
 ![GlaViTU](assets/glavitu.png)
 
@@ -98,7 +98,7 @@ TODO: Do via a jupyter notebook (refactor and upload).
 After that, simply run
 
 ```
-(massive-tf) python deploy.py ... -bias <BIAS VECTOR> ... 
+(massive-tf) python deploy.py ... -rg <REGION VECTOR> ... 
 ```
 
 
@@ -111,7 +111,7 @@ We encourage you to try different options in your area of interest and share you
 
 ## Ice divides
 
-We moved the algorithms for ice divides reconstruction to [a different repository]().
+We moved the algorithms for ice divides reconstruction to [a different repository](https://github.com/konstantin-a-maslov/massive_ice_divides).
 
 
 ## License
