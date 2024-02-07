@@ -10,11 +10,8 @@ from tqdm import tqdm
 def read_tile(tile):
     pad_height = tile.attrs["padding_height"]
     pad_width = tile.attrs["padding_width"]
-    features = {_: np.array(tile[_])[np.newaxis, ...] for _ in tile.keys() if _ != "outlines"}
-    if config.cli_args and config.cli_args.subtract_dem_mean and "dem" in features.keys():
-        dem_mean = np.mean(features["dem"][..., 0])
-        features["dem"][..., 0] -= dem_mean
-    groundtruth = np.array(tile["outlines"])
+    features = {_: np.array(tile[_])[np.newaxis, ...] for _ in tile.keys() if _ != config.data.labels}
+    groundtruth = np.array(tile[config.data.labels])
     return features, groundtruth, (pad_height, pad_width)
 
 
@@ -73,8 +70,8 @@ def main():
         weights_path=weights_path, mode="testing"
     )
 
-    for tile_name in tqdm(test_dataset.keys()):
-        tile = test_dataset[tile_name]
+    for tile_name in tqdm(dataset.keys()):
+        tile = dataset[tile_name]
         features, true, (pad_height, pad_width) = read_tile(tile)
 
         if len(train_dataloader.plugins) > 0:
@@ -123,15 +120,27 @@ def main():
         
 
 if __name__ == "__main__":
-    utils.update_config_from_cli(config)
-    test_dataset = h5py.File(config.data.test_dataset_path, "r")
+    parser = utils.create_cli_parser()
+    parser.add_argument("--val", action="store_true", help="Use validation set for inference")
+    args = parser.parse_args()
+    utils.update_config_from_args(args)
+
+    if args.val:
+        dataset = h5py.File(config.data.val_dataset_path, "r")
+    else:
+        dataset = h5py.File(config.data.test_dataset_path, "r")
     predictions_dataset_dir = os.path.join(config.data.predictions_dir, config.model.model_name)
     if not os.path.exists(predictions_dataset_dir):
         os.makedirs(predictions_dataset_dir, exist_ok=True)
-    predictions_dataset_path = os.path.join(predictions_dataset_dir, "predictions.hdf5")
+
+    predictions_dataset_path = os.path.join(
+        predictions_dataset_dir, f"predictions{'_val' if args.val else ''}.hdf5"
+    )
     if os.path.isfile(predictions_dataset_path):
         os.remove(predictions_dataset_path)
     predictions_dataset = h5py.File(predictions_dataset_path, "w")
+
     main()
+
     predictions_dataset.close()
-    test_dataset.close()
+    dataset.close()

@@ -66,9 +66,7 @@ def create_cli_parser():
     return parser
 
 
-def update_config_from_cli(config):
-    parser = create_cli_parser()
-    args = parser.parse_args()
+def update_config_from_args(args):
     config.cli_args = args
     update_config(
         config, 
@@ -86,6 +84,12 @@ def update_config_from_cli(config):
         noise=args.noise,
         label_smoothing=args.label_smoothing,
     )
+
+
+def update_config_from_cli(config):
+    parser = create_cli_parser()
+    args = parser.parse_args()
+    update_config_from_args(args)
 
 
 def build_dataloader(sampler_builder, sampler_args, plugins, batch_size, labels, len_factor=1):
