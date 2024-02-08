@@ -78,32 +78,67 @@ The `predictions_dir` variable should contain a path to the folder where you wou
 
 ### Training/finetuning a model
 
+Once Python is successfully installed and configs are adjusted properly, one can start training glacier mapping models. 
+For example, to train a global GlaViTU model as in the paper, run
+
 ```
-(massive-tf) python train.py ...
+(massive-tf) python train.py -n glavitu_global -f optical dem --contrast --occlusion --noise --label_smoothing 0.1
+```
+
+To use location encoding, you might want to provide either the `--region_encoding` flag or the `--coordinate_encoding` flag. 
+To train a model for one region or a cluster of regions, list them after the `-r` flag (e.g., `-r AWA ALP LL`). 
+Note that the regions are named differently here as compared to the paper: `ALP` (the European Alps), `AN` (Antacrtica), `AWA` (Alaska and Western America), `CA` (Caucasus), `GR` (Greenland), `HMA` (High-Mountain Asia), `LL` (low latitudes), `NZ` (New Zealand), `SA` (the Southern Andes), `SC` (Scandinavia), `SVAL` (Svalbard). 
+Also, to change the feature set used, adjust the list after the `-f` flag. 
+Available features are `optical`, `dem`, `co_pol_sar`, `cross_pol_sar`, `in_sar` and `thermal`.
+Please, run `python train.py -h` to see all available options.
+
+Similarly, a model can be finetuned further (e.g., for the European Alps)
+
+```
+(massive-tf) python finetune.py -n glavitu_finetuning_ALP -r ALP -f optical dem -w weights/glavitu_global_weights.h5 --contrast --occlusion --noise --label_smoothing 0.1
 ```
 
 ### Predicting on the test subset
 
+To predict on the testing set, call the `predict.py` script copying all model-related parameters. 
+For example, if the model was trained as shown above, it will be 
+
 ```
-(massive-tf) python predict.py ...
+(massive-tf) python predict.py -n glavitu_global -f optical dem
 ```
+
+You might want to run the script with the `--val` flag to predict on the validation set, which is needed for predictive confidence calibration. 
 
 ### Evaluating on the test subset
 
 To get the estimation of a model performance on the testing set, run
 
 ```
-(massive-tf) python evaluate.py -n <MODEL NAME>
+(massive-tf) python evaluate.py -n glavitu_global
 ```
 
 It will output the averaged performance of the model as well as IoU scores for every region and subregion in the dataset. 
+If a model was trained as shown above, you will see the numbers close to those reported in the paper as derived with GlaViTU and the global strategy. 
 
 ### Running on custom/standalone data
 
+To run models on a custom data, e.g., your own region of interest, you first have to compile the features into one `.pickle` file. 
+The minimal set of features that must be provided include optical (6 TOA bands: blue, green, red, near infrared, shortwave infrared 1 and shortwave infrared 2), elevation (in m) and slope (in deg) data. 
+You might want to provide additional SAR backscatter (sigma0 values for both orbital directions in linear scale), InSAR interferometry and thermal (in K) features. 
+The features are provided as `.tif` georeferenced rasters. 
+Make sure that the rasters are defined on the same grid before proceeding. 
+
 ```
 (massive-tf) python compile_features.py ...
+```
+
+Once the features were compiled, run
+
+```
 (massive-tf) python deploy.py ...
 ```
+
+It will
 
 ### Confidence calibration
 
@@ -127,7 +162,7 @@ Follow the instruction in the notebok, which mainly are to adjust the paths to y
 After that, simply run
 
 ```
-(massive-tf) python deploy.py ... -rg <REGION VECTOR.pickle> ... 
+(massive-tf) python deploy.py ... -rv <REGION VECTOR.pickle> ... 
 ```
 
 
