@@ -7,7 +7,7 @@ import argparse
 def update_config(
     config, model=None, name=None, region_encoding=None, coordinate_encoding=None, features=None, 
     regions=None, subregions=None, labels=None, weights_path=None, contrast=None, occlusion=None, 
-    noise=None, label_smoothing=None
+    noise=None, label_smoothing=None, mcdropout=None
 ):
     if region_encoding and coordinate_encoding:
         raise NotImplementedError("Simultaneous region and coordinate encodings are not implemented!")
@@ -41,6 +41,8 @@ def update_config(
         add_noise_augmentation(config)
     if label_smoothing:
         add_label_smoothing(config, label_smoothing)
+    if mcdropout:
+        set_mcdropout(config)
 
 
 def create_cli_parser():
@@ -63,6 +65,8 @@ def create_cli_parser():
 
     parser.add_argument("--label_smoothing", default=0.0, type=float, help="Label smoothing parameter")
 
+    parser.add_argument("--mcdropout", action="store_true", help="Use of inference-time MC dropout")
+
     return parser
 
 
@@ -83,6 +87,7 @@ def update_config_from_args(args):
         occlusion=args.occlusion,
         noise=args.noise,
         label_smoothing=args.label_smoothing,
+        mcdropout=args.mcdropout,
     )
 
 
@@ -273,3 +278,9 @@ def add_noise_augmentation(config, shift=0.025, noise=0.005):
 def add_label_smoothing(config, smoothing=0.1):
     label_smoothing = dataloaders.AddLabelSmoothing(smoothing=smoothing)
     config.data.train_plugins += [label_smoothing]
+
+
+def set_mcdropout(config):
+    config.model.model_args.update({
+        "inference_dropout": True
+    })

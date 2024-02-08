@@ -32,7 +32,16 @@ def apply_model(model, features):
                     patch[feature] = arr[:, row:row + patch_size, col:col + patch_size, :]
                 else:
                     patch[feature] = arr
-            patch_prob = model.predict(patch)[0]
+            if args.n > 1:
+                patch_prob = None
+                for _ in range(args.n):
+                    if not patch_prob:
+                        patch_prob = model.predict(patch)[0]
+                    else:
+                        patch_prob += model.predict(patch)[0]
+                patch_prob /= args.n
+            else:
+                patch_prob = model.predict(patch)[0]
             weighted_prob[row:row + patch_size, col:col + patch_size, :] += (weights * patch_prob)
             counts[row:row + patch_size, col:col + patch_size, :] += weights
             col += (patch_size // 2)
@@ -122,7 +131,10 @@ def main():
 if __name__ == "__main__":
     parser = utils.create_cli_parser()
     parser.add_argument("--val", action="store_true", help="Use validation set for inference")
+    parser.add_argument("--n", default=1, type=int, help="Number of inference runs")
     args = parser.parse_args()
+    if args.n > 1:
+        args.mcdropout = True
     utils.update_config_from_args(args)
 
     if args.val:

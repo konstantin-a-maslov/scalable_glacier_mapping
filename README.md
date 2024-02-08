@@ -7,8 +7,6 @@
 <br/>
 
 
-**The repository is in progress.**
-
 ![GlaViTU](assets/glavitu.png)
 
 This GitHub repository is dedicated to the suite of tools and techniques developed in our study "Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data." 
@@ -58,9 +56,25 @@ We also expect it to work on any modern Linux distribution or Windows, given pro
 
 ## Getting started
 
-TODO: Add instructions to the subsections.
+We deliver our codebase as a set of python scripts and a couple of Jupyter notebooks. 
+For every `.py` file, there is a manual page available by running it with the `-h` (or `--help`) flag. 
+In case of confusion, you might like to see these manual pages. 
 
 ### Adjusting configs
+
+First, adjust the data config file. 
+Find the following lines
+
+```
+train_dataset_path = ...
+val_dataset_path = ...
+test_dataset_path = ...
+
+predictions_dir = ...
+```
+
+And replace the paths to the downloaded subsets of the dataset depending on where you store them. 
+The `predictions_dir` variable should contain a path to the folder where you would like to store the prediction results. 
 
 ### Training/finetuning a model
 
@@ -76,9 +90,13 @@ TODO: Add instructions to the subsections.
 
 ### Evaluating on the test subset
 
+To get the estimation of a model performance on the testing set, run
+
 ```
-(massive-tf) python evaluate.py ...
+(massive-tf) python evaluate.py -n <MODEL NAME>
 ```
+
+It will output the averaged performance of the model as well as IoU scores for every region and subregion in the dataset. 
 
 ### Running on custom/standalone data
 
@@ -89,16 +107,27 @@ TODO: Add instructions to the subsections.
 
 ### Confidence calibration
 
-TODO: Do via a jupyter notebook (refactor and upload).
+To calibrate the predictive confidence, you will need to prepare a pretrained model and run it on the validation set. 
+To do so, simply run `predict.py` as shown above with the `--val` flag. 
+Then follow the [`confidence_calibration.ipynb`](confidence_calibration.ipynb) notebook, where you will need to adjust the paths and get a `.pickle` instance of the confidence calibration model.  
+
+After you have saved a confidence calibration model, you can use it for inference as follows
+
+```
+(massive-tf) python deploy.py ... -cm <CALIBRATION MODEL.pickle> ... 
+```
+
 
 ### Bias optimisation
 
-TODO: Do via a jupyter notebook (refactor and upload).
+To obtain an optimised bias/region vector for your area of interest, go through the [`bias_optimisation.ipynb`](bias_optimisation.ipynb) notebook. 
+You will have to prepare a pretrained model and a feature `.pickle` file (see above) beforehand. 
+Follow the instruction in the notebok, which mainly are to adjust the paths to your files. 
 
 After that, simply run
 
 ```
-(massive-tf) python deploy.py ... -rg <REGION VECTOR> ... 
+(massive-tf) python deploy.py ... -rg <REGION VECTOR.pickle> ... 
 ```
 
 
