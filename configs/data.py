@@ -4,12 +4,11 @@ import h5py
 import os
 
 
-data_dir = os.path.join("/data", "massive", "glacier_outlines", "precomputed")
-train_dataset_path = os.path.join(data_dir, "20230905_train_global_ps384.hdf5")
-val_dataset_path = os.path.join(data_dir, "20230905_val_global_ps384.hdf5")
-test_dataset_path = os.path.join(data_dir, "20230905_test_global_ps384.hdf5")
+train_dataset_path = ...
+val_dataset_path = ...
+test_dataset_path = ...
 
-predictions_dir = os.path.join(data_dir, "predictions")
+predictions_dir = ...
 
 n_outputs = 2
 patch_size = 384
