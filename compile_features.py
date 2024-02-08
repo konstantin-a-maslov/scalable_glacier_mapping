@@ -61,7 +61,7 @@ def main():
     
     with rasterio.open(args.elevation, "r") as file:
         elev = file.read(1)
-        elev = (elev - mins["dem"]) / (maxs["dem"] - mins["dem"])
+        elev = (elev - mins["elevation"]) / (maxs["elevation"] - mins["elevation"])
         elev = cv2.resize(elev, (width, height))
     with rasterio.open(args.slope, "r") as file:
         slope = file.read(1)
@@ -83,6 +83,8 @@ def main():
         if path:
             with rasterio.open(path, "r") as file:
                 arr = file.read()
+                if feature in {"co_pol_sar", "cross_pol_sar"}:
+                    arr = np.log10(arr + 1e-6)
                 arr = (arr - mins[feature]) / (maxs[feature] - mins[feature])
                 arr = cv2.resize(arr, (width, height))
             features[feature] = arr
