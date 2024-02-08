@@ -87,7 +87,7 @@ For example, to train a global GlaViTU model as in the paper, run
 
 To use location encoding, you might want to provide either the `--region_encoding` flag or the `--coordinate_encoding` flag. 
 To train a model for one region or a cluster of regions, list them after the `-r` flag (e.g., `-r AWA ALP LL`). 
-Note that the regions are named differently here as compared to the paper: `ALP` (the European Alps), `AN` (Antacrtica), `AWA` (Alaska and Western America), `CA` (Caucasus), `GR` (Greenland), `HMA` (High-Mountain Asia), `LL` (low latitudes), `NZ` (New Zealand), `SA` (the Southern Andes), `SC` (Scandinavia), `SVAL` (Svalbard). 
+Note that the regions are named differently here as compared to the paper{{em dash}}`ALP` (the European Alps), `AN` (Antarctica), `AWA` (Alaska and Western America), `CA` (Caucasus), `GR` (Greenland), `HMA` (High-Mountain Asia), `LL` (low latitudes), `NZ` (New Zealand), `SA` (the Southern Andes), `SC` (Scandinavia) and `SVAL` (Svalbard). 
 Also, to change the feature set used, adjust the list after the `-f` flag. 
 Available features are `optical`, `dem`, `co_pol_sar`, `cross_pol_sar`, `in_sar` and `thermal`.
 Please, run `python train.py -h` to see all available options.
@@ -123,14 +123,17 @@ If a model was trained as shown above, you will see the numbers close to those r
 ### Running on custom/standalone data
 
 To run models on a custom data, e.g., your own region of interest, you first have to compile the features into one `.pickle` file. 
-The minimal set of features that must be provided include optical (6 TOA bands: blue, green, red, near infrared, shortwave infrared 1 and shortwave infrared 2), elevation (in m) and slope (in deg) data. 
-You might want to provide additional SAR backscatter (sigma0 values for both orbital directions in linear scale), InSAR interferometry and thermal (in K) features. 
+The minimal set of features that must be provided include optical (6 TOA bands{{em dash}}blue, green, red, near infrared, shortwave infrared 1 and shortwave infrared 2), elevation (in m) and slope (in deg) data. 
+You might want to provide additional SAR backscatter (sigma0 values in linear scale for both orbital directions stacked as separate bands), InSAR interferometry and thermal (in K) features. 
 The features are provided as `.tif` georeferenced rasters. 
 Make sure that the rasters are defined on the same grid before proceeding. 
+To create a `.pickle` file with the features, run
 
 ```
-(massive-tf) python compile_features.py ...
+(massive-tf) python compile_features.py --optical <PATH/TO/OPTICAL.tif> --elevation <PATH/TO/ELEVATION.tif> --slope <PATH/TO/SLOPE.tif> --output <PATH/TO/OUTPUT.pickle> 
 ```
+
+Additional features can be provided with optional flags{{em dash}}`co_pol_sar`, `cross_pol_sar`, `in_sar` and `thermal`.
 
 Once the features were compiled, run
 
@@ -138,7 +141,8 @@ Once the features were compiled, run
 (massive-tf) python deploy.py ...
 ```
 
-It will
+It will create two raster files as outputs{{em dash}}`outlines.tif` and `confidence.tif` that can be analysed further in a GIS. 
+Check `python utils/geo/polygonise.py -h` for converting `outlines.tif` into a vector shapefile. 
 
 ### Confidence calibration
 
