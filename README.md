@@ -135,10 +135,10 @@ To create a `.pickle` file with the features, run
 
 Additional features can be provided with optional flags&mdash;`co_pol_sar`, `cross_pol_sar`, `in_sar` and `thermal`.
 
-Once the features were compiled, run
+Once the features are compiled, run
 
 ```
-(massive-tf) python deploy.py ...
+(massive-tf) python deploy.py <PATH/TO/FEATURES.pickle> -o <OUTPUT/FOLDER> -n glavitu_global -f optical dem --smoothing 3
 ```
 
 It will create two raster files as outputs&mdash;`outlines.tif` and `confidence.tif` that can be analysed further in a GIS. 

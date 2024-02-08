@@ -60,9 +60,6 @@ def gaussian_kernel(size, mu=0, sigma=1):
 
 
 def main():
-    if config.model.inference_dropout:
-        raise NotImplementedError()
-
     train_dataloader = utils.build_dataloader(
         config.data.train_sampler_builder,
         config.data.train_sampler_args, 
@@ -135,7 +132,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.n > 1:
         args.mcdropout = True
-    utils.update_config_from_args(args)
+    utils.update_config_from_args(config, args)
 
     if args.val:
         dataset = h5py.File(config.data.val_dataset_path, "r")
