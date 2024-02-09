@@ -22,9 +22,9 @@ Our results support efforts towards automated multitemporal and global glacier m
 
 ## Datasets
 
-You can access the main dataset than can be used to train a model and to assess preliminary its performance [here](https://bit.ly/3UgEDgA). 
+You can access the main dataset that can be used to train a model and to assess its performance on it [here](https://bit.ly/3UgEDgA). 
 If you wish to try the code only, you may want to use a [demo dataset](https://bit.ly/49aVPIJ), which is just a 10% subsample of the main one. 
-For more challenging spatial and temporal generalisation tests, there is a [standalone dataset](https://bit.ly/48WUGoA) that contains acquisitions completely different from those in the main dataset. 
+For more challenging spatial and temporal generalisation tests, there is a [standalone dataset](https://bit.ly/48WUGoA) that contains  completely different in space and time acquisitions from those in the main dataset. 
 The datasets will be also possible to access in [DANS](https://dans.knaw.nl/en/), where they will be uploaded shortly. 
 
 
