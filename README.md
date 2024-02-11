@@ -63,7 +63,7 @@ In case of confusion, you might like to see these manual pages.
 ### Adjusting configs
 
 First, adjust the data config file. 
-Find the following lines
+Find the following lines in `configs/data.py`
 
 ```
 train_dataset_path = ...
@@ -124,7 +124,7 @@ If a model was trained as shown above, you will see the numbers close to those r
 
 To run models on a custom data, e.g., your own region of interest, you first have to compile the features into one `.pickle` file. 
 The minimal set of features that must be provided include optical (6 TOA bands&mdash;blue, green, red, near infrared, shortwave infrared 1 and shortwave infrared 2), elevation (in m) and slope (in deg) data. 
-You might want to provide additional SAR backscatter (sigma0 values in linear scale for both orbital directions stacked as separate bands), InSAR interferometry and thermal (in K) features. 
+You might want to provide additional SAR backscatter (sigma0 values in linear scale for both orbital directions stacked as separate bands), InSAR interferometric coherence and thermal (in K) features. 
 The features are provided as `.tif` georeferenced rasters. 
 Make sure that the rasters are defined on the same grid before proceeding. 
 To create a `.pickle` file with the features, run
@@ -133,7 +133,7 @@ To create a `.pickle` file with the features, run
 (massive-tf) python compile_features.py --optical <PATH/TO/OPTICAL.tif> --elevation <PATH/TO/ELEVATION.tif> --slope <PATH/TO/SLOPE.tif> --output <PATH/TO/OUTPUT.pickle> 
 ```
 
-Additional features can be provided with optional flags&mdash;`co_pol_sar`, `cross_pol_sar`, `in_sar` and `thermal`.
+Additional features can be provided with optional flags&mdash;`--co_pol_sar`, `--cross_pol_sar`, `--in_sar` and `--thermal`.
 
 Once the features are compiled, run
 
