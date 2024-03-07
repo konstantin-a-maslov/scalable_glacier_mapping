@@ -70,7 +70,7 @@ def create_cli_parser():
     return parser
 
 
-def update_config_from_args(args):
+def update_config_from_args(config, args):
     config.cli_args = args
     update_config(
         config, 
@@ -94,7 +94,7 @@ def update_config_from_args(args):
 def update_config_from_cli(config):
     parser = create_cli_parser()
     args = parser.parse_args()
-    update_config_from_args(args)
+    update_config_from_args(config, args)
 
 
 def build_dataloader(sampler_builder, sampler_args, plugins, batch_size, labels, len_factor=1):
