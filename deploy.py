@@ -3,6 +3,7 @@ import rasterio
 import scipy.ndimage
 import numpy as np
 import models.mapping
+import tta
 import utils
 import pickle
 import os
@@ -82,6 +83,70 @@ def apply_model(model, features, batch_size=config.data.batch_size):
                 row_pred:row_pred + patch_size, 
                 col_pred:col_pred + patch_size, :
             ] += weights
+
+    prob = weighted_prob / counts
+    return prob
+
+
+def apply_model_with_tta(model, features):
+    tta_transformations = [
+        tta.TTAIdentity(), tta.TTARot90(), tta.TTARot180(), tta.TTARot270(),
+        tta.TTAFlipHorizontally(), tta.TTAFlipVertically(),
+        tta.TTACompose([tta.TTARot90(), tta.TTAFlipHorizontally()]),
+        tta.TTACompose([tta.TTARot90(), tta.TTAFlipVertically()]),
+    ]
+
+    patch_size = config.data.patch_size
+    height, width, _ = features["optical"].shape
+    weighted_prob = np.zeros((height, width, config.data.n_outputs))
+    weights = gaussian_kernel(patch_size)[..., np.newaxis]
+    counts = np.zeros((height, width, 1))
+
+    patch = {feature: None for feature in features.keys() if feature not in {"lat", "lon"}}
+    patch["location"] = None
+    
+    row = 0
+    while row + patch_size <= height:
+        col = 0 
+        while col + patch_size <= width:
+            for feature, arr in features.items():
+                if feature == "lat" or feature == "lon":
+                    continue
+                patch[feature] = arr[row:row + patch_size, col:col + patch_size, :]
+                if args.region_encoding:
+                    patch["location"] = region_vector
+                if args.coordinate_encoding:
+                    lat_arr = features["lat"]
+                    lon_arr = features["lon"]
+                    lat = lat_arr[row + patch_size // 2, col + patch_size // 2, 0]
+                    lon = lon_arr[row + patch_size // 2, col + patch_size // 2, 0]
+                    coordinates_vector = np.array([np.sin(lat), np.cos(lat), np.sin(lon), np.cos(lon)])
+                    patch["location"] = coordinates_vector
+            
+            # infer with tta
+            for transform in tqdm(tta_transformations, desc=f"{row}--{col}"):
+                tta_patch = {}
+                for feature, arr in patch.items():
+                    if len(arr.shape) == 3:
+                        # if an image feature
+                        tta_patch[feature] = np.array([transform.forward_transform(arr)])
+                    else:
+                        # everything else, i.e. the location vector
+                        tta_patch[feature] = np.array([arr])
+                        
+                patch_prob = model.predict(tta_patch, verbose=0)[0]
+                patch_prob = transform.backward_transform(patch_prob)
+                weighted_prob[
+                    row:row + patch_size, 
+                    col:col + patch_size, :
+                ] += (weights * patch_prob)
+                counts[
+                    row:row + patch_size, 
+                    col:col + patch_size, :
+                ] += weights
+
+            col += (patch_size // 2)
+        row += (patch_size // 2)
 
     prob = weighted_prob / counts
     return prob
@@ -176,6 +241,7 @@ if __name__ == "__main__":
     parser.add_argument("-cm", "--calibration_model", help="Confidence calibration model path")
     parser.add_argument("-rv", "--region_vector", help="Region vector path")
     parser.add_argument("--smoothing", type=int, help="Median filter smoothing factor for outlines")
+    parser.add_argument("--tta", action="store_true", help="Use of test-time augmentation for inference")
     args = parser.parse_args()
     if args.n > 1:
         args.mcdropout = True
@@ -191,5 +257,8 @@ if __name__ == "__main__":
     if args.region_vector:
         with open(args.region_vector, "rb") as file:
             region_vector = pickle.load(file)
+
+    if args.tta:
+        apply_model = apply_model_with_tta
 
     main()
