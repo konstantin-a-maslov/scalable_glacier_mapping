@@ -74,3 +74,54 @@ class LRCosineDecay(tf.keras.callbacks.Callback):
 
         if self.verbose > 0:
             print(f"\nLRCosineDecay callback: set learning rate to {lr}")
+
+
+def make_model_sharpness_aware(model, rho=0.05):
+    import types
+
+    def train_step_sam(self, data):
+        """
+        Heavily inspired by https://www.kaggle.com/code/ashaykatrojwar/sharpness-aware-minimization-with-tensorflow
+        """
+        if len(data) == 3:
+            x, y, sample_weight = data
+        else:
+            sample_weight = None
+            x, y = data
+            
+        trainable = self.trainable_variables
+            
+        # first forward and backward passes in initial point
+        with tf.GradientTape() as tape:
+            y_pred1 = self(x, training=True)
+            loss = self.compiled_loss(y, y_pred1, sample_weight=sample_weight, regularization_losses=self.losses)
+            
+        grad = tape.gradient(loss, trainable)
+        grad_norm = tf.linalg.global_norm(grad)
+        
+        # moving to adversarial point
+        adversarial_deltas = []
+        for i in range(len(trainable)):
+            delta = tf.math.multiply(grad[i], rho / grad_norm)
+            trainable[i].assign_add(delta)
+            adversarial_deltas.append(delta)
+            
+        # second forward and backward passes in adversarial point
+        with tf.GradientTape() as tape:
+            y_pred2 = self(x, training=True) 
+            loss = self.compiled_loss(y, y_pred2, sample_weight=sample_weight, regularization_losses=self.losses)
+
+        grad = tape.gradient(loss, trainable)
+        
+        # moving back to initial point
+        for i in range(len(trainable)):
+            trainable[i].assign_sub(adversarial_deltas[i])
+            
+        # update weights
+        self.optimizer.apply_gradients(zip(grad, trainable))
+        # update metrics and return
+        self.compiled_metrics.update_state(y, y_pred1, sample_weight=sample_weight)
+        return {metric.name: metric.result() for metric in self.metrics}
+    
+    model.train_step = types.MethodType(train_step_sam, model)
+    return model
