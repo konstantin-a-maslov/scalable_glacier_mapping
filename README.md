@@ -143,9 +143,9 @@ Once the features are compiled, run
 
 It will create two raster files as outputs&mdash;`outlines.tif` and `confidence.tif` that can be analysed further in a GIS. 
 Check `python utils/geo/polygonise.py -h` for converting `outlines.tif` into a vector shapefile. 
-Also, check the `--tta` flag of `deploy.py` that enables test-time augmentation.
-While not reported in the paper, we found that test-time augmentation provides a more robust behaviour of the model, so we recommend using it. 
-Note, however, that it will increase the inference time by approx. eight times.
+You might also want to check the `--tta` flag of `deploy.py` that enables test-time augmentation.
+While not reported in the paper, we found that test-time augmentation provides a more robust behaviour of the model yet often leads to a decrease in accuracy (in our experiments). 
+Note, however, that `--tta` will increase the inference time by approx. eight times.
 
 
 ### Confidence calibration
