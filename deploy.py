@@ -127,6 +127,8 @@ def apply_model_with_tta(model, features):
             for transform in tqdm(tta_transformations, desc=f"{row}--{col}"):
                 tta_patch = {}
                 for feature, arr in patch.items():
+                    if arr is None:
+                        continue
                     if len(arr.shape) == 3:
                         # if an image feature
                         tta_patch[feature] = np.array([transform.forward_transform(arr)])
