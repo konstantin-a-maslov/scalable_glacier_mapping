@@ -11,10 +11,11 @@
 
 This GitHub repository is dedicated to the suite of tools and techniques developed in our study "Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data." 
 Accurate global glacier mapping is critical for understanding climate change impacts. 
-It is challenged by glacier diversity, difficult-to-classify debris and big data processing. 
-Here we propose Glacier-VisionTransformer-U-Net (GlaViTU), a convolutional-transformer deep learning model, and five strategies for multitemporal global-scale glacier mapping using open satellite imagery. 
+Despite its importance, automated glacier mapping at a global scale remains largely unexplored. 
+Here we address this gap and propose Glacier-VisionTransformer-U-Net (GlaViTU), a convolutional-transformer deep learning model, and five strategies for multitemporal global-scale glacier mapping using open satellite imagery. 
 Assessing the spatial, temporal and cross-sensor generalisation shows that our best strategy achieves intersection over union >0.85 on previously unobserved images in most cases, which drops to >0.75 for debris-rich areas such as High-Mountain Asia and increases to >0.90 for regions dominated by clean ice. 
-Additionally, adding synthetic aperture radar data, namely, backscatter and interferometric coherence, increases the accuracy in all regions where available. 
+A comparative validation against human expert uncertainties in terms of area and distance deviations underscores GlaViTU performance, approaching or matching expert-level delineation. 
+Adding synthetic aperture radar data, namely, backscatter and interferometric coherence, increases the accuracy in all regions where available. 
 The calibrated confidence for glacier extents is reported making the predictions more reliable and interpretable. 
 We also release a benchmark dataset that covers 9% of glaciers worldwide. 
 Our results support efforts towards automated multitemporal and global glacier mapping. 
@@ -22,9 +23,9 @@ Our results support efforts towards automated multitemporal and global glacier m
 
 ## Datasets
 
-You can access the main dataset that can be used to train a model and to assess its performance on it [here](https://bit.ly/3UgEDgA). 
+You can access the tile-based dataset that can be used to train a model and to assess its performance on it [here](https://bit.ly/3UgEDgA). 
 If you wish to try the code only, you may want to use a [demo dataset](https://bit.ly/49aVPIJ), which is just a 10% subsample of the main one. 
-For more challenging spatial and temporal generalisation tests, there is a [standalone dataset](https://bit.ly/48WUGoA) that contains  completely different in space and time acquisitions from those in the main dataset. 
+For more challenging spatial and temporal generalisation tests, there is a [independent acquisition test dataset](https://bit.ly/48WUGoA) that contains completely different in space and time acquisitions from those in the tile-based dataset. 
 The datasets will be also possible to access in [DANS](https://dans.knaw.nl/en/), where they will be uploaded shortly. 
 
 
@@ -73,7 +74,7 @@ test_dataset_path = ...
 predictions_dir = ...
 ```
 
-And replace the paths to the downloaded subsets of the dataset depending on where you store them. 
+And replace the paths to the downloaded subsets of the tile-based dataset depending on where you store them. 
 The `predictions_dir` variable should contain a path to the folder where you would like to store the prediction results. 
 
 ### Training/finetuning a model
