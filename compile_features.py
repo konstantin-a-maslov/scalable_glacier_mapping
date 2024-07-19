@@ -83,6 +83,7 @@ def main():
         if path:
             with rasterio.open(path, "r") as file:
                 arr = file.read()
+                arr = np.moveaxis(arr, 0, -1)
                 if feature in {"co_pol_sar", "cross_pol_sar"}:
                     arr = np.log10(arr + 1e-6)
                 arr = (arr - mins[feature]) / (maxs[feature] - mins[feature])
