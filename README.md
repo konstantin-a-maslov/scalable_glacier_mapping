@@ -1,4 +1,4 @@
-# Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data
+# Scalable Glacier Mapping using Deep Learning and Open Earth Observation Data Matches the Accuracy of Manual Delineation
 
 [Konstantin A. Maslov](https://people.utwente.nl/k.a.maslov), [Claudio Persello](https://people.utwente.nl/c.persello), [Thomas Schellenberger](https://www.mn.uio.no/geo/english/people/aca/geohyd/thosche/), [Alfred Stein](https://people.utwente.nl/a.stein)
 
@@ -7,9 +7,10 @@
 <br/>
 
 
+![DataResults](assets/dataresults.png)
 ![GlaViTU](assets/glavitu.png)
 
-This GitHub repository is dedicated to the suite of tools and techniques developed in our study "Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data." 
+This GitHub repository is dedicated to the suite of tools and techniques developed in our study "Scalable Glacier Mapping using Deep Learning and Open Earth Observation Data Matches the Accuracy of Manual Delineation." 
 Accurate global glacier mapping is critical for understanding climate change impacts. 
 Despite its importance, automated glacier mapping at a global scale remains largely unexplored. 
 Here we address this gap and propose Glacier-VisionTransformer-U-Net (GlaViTU), a convolutional-transformer deep learning model, and five strategies for multitemporal global-scale glacier mapping using open satellite imagery. 
