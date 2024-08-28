@@ -8,7 +8,7 @@
 
 
 ![DataResults](assets/dataresults.png)
-![GlaViTU](assets/glavitu.png)
+<!-- ![GlaViTU](assets/glavitu.png) -->
 
 This GitHub repository is dedicated to the suite of tools and techniques developed in our study "Scalable Glacier Mapping using Deep Learning and Open Earth Observation Data Matches the Accuracy of Manual Delineation." 
 Accurate global glacier mapping is critical for understanding climate change impacts. 
