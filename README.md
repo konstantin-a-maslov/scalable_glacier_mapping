@@ -52,7 +52,7 @@ conda create -n massive-tf "tensorflow>=2.7" h5py scikit-learn rioxarray geopand
 conda activate massive-tf
 ```
 
-We tested this configuration on Ubuntu 20.04 and Ubuntu 22.04 (see `env_ub2004.yml` and `env_ub2204.yml` for tested dependencies). 
+We tested this configuration on Ubuntu 20.04 and Ubuntu 22.04 (see `envs/env_ub2004.yml` and `envs/env_ub2204.yml` for tested dependencies). 
 We also expect it to work on any modern Linux distribution or Windows, given properly configured NVIDIA GPU drivers.
 
 
