@@ -26,7 +26,7 @@ def pad_features_to_patch_size(features, patch_size):
 
 
 def main():
-    with open("dataset_stats.pickle", "rb") as file:
+    with open(args.dataset_stats_path, "rb") as file:
         mins, maxs = pickle.load(file)
     
     with rasterio.open(args.optical, "r") as file:
@@ -114,6 +114,8 @@ if __name__ == "__main__":
     parser.add_argument("--cross_pol_sar", help="Path to cross_pol_sar .tif raster")
     parser.add_argument("--in_sar", help="Path to in_sar .tif raster")
     parser.add_argument("--thermal", help="Path to thermal .tif raster")
+    
+    parser.add_argument("--dataset_stats_path", default="utils/dataset_stats.pickle", help="Path to datasets_stats.pickle")
 
     args = parser.parse_args()
 
