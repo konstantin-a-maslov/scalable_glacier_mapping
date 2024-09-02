@@ -1,4 +1,4 @@
-import config
+import configs.config as config
 import rasterio
 import scipy.ndimage
 import numpy as np

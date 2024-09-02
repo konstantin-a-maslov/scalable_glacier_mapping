@@ -1,4 +1,4 @@
-import config
+import configs.config as config
 import utils
 
 

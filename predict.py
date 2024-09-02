@@ -1,6 +1,6 @@
 import h5py
 import numpy as np
-import config
+import configs.config as config
 import dataloaders
 import utils
 import os
