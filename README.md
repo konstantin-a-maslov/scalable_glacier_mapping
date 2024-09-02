@@ -124,6 +124,8 @@ If a model was trained as shown above, you will see the numbers close to those r
 
 ### Running on custom/standalone data
 
+The workflow below is also summarised in a Jupyter Notebook that you can find [`here`](demo.ipynb).
+
 To run models on a custom data, e.g., your own region of interest, you first have to compile the features into one `.pickle` file. 
 The minimal set of features that must be provided include optical (6 TOA bands&mdash;blue, green, red, near infrared, shortwave infrared 1 and shortwave infrared 2), elevation (in m) and slope (in deg) data. 
 You might want to provide additional SAR backscatter (sigma0 values in linear scale for both orbital directions stacked as separate bands), InSAR interferometric coherence and thermal (in K) features. 
