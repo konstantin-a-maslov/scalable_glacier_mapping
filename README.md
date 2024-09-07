@@ -212,8 +212,8 @@ To cite the paper/repository, please use the following bib entry.
 }
 ``` -->
 ```
-@article{towardsglobalglaciermapping2024,
-    title = {Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data.},
+@article{scalableglaciermapping2024,
+    title = {Scalable Glacier Mapping using Deep Learning and Open Earth Observation Data Matches the Accuracy of Manual Delineation},
     author = {Maslov, Konstantin A. and Persello, Claudio and Schellenberger, Thomas and Stein, Alfred},
     doi = {10.48550/arXiv.2401.15113},    
     url = {https://arxiv.org/abs/2401.15113},
