@@ -1,4 +1,4 @@
-# Scalable Glacier Mapping using Deep Learning and Open Earth Observation Data Matches the Accuracy of Manual Delineation
+# Globally Scalable Glacier Mapping using Deep Learning and Open Satellite Imagery Matches Manual Delineation Accuracy
 
 [Konstantin A. Maslov](https://people.utwente.nl/k.a.maslov), [Claudio Persello](https://people.utwente.nl/c.persello), [Thomas Schellenberger](https://www.mn.uio.no/geo/english/people/aca/geohyd/thosche/), [Alfred Stein](https://people.utwente.nl/a.stein)
 
@@ -21,6 +21,7 @@ The calibrated confidence for glacier extents is reported making the predictions
 We also release a benchmark dataset that covers 9% of glaciers worldwide. 
 Our results support efforts towards automated multitemporal and global glacier mapping. 
 
+Explore this project's functionalities through a Jupyter Notebook which provides a summarized workflow for main features [`here`](demo.ipynb).
 
 ## Datasets
 
