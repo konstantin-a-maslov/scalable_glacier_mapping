@@ -21,7 +21,9 @@ The calibrated confidence for glacier extents is reported making the predictions
 We also release a benchmark dataset that covers 9% of glaciers worldwide. 
 Our results support efforts towards automated multitemporal and global glacier mapping. 
 
-Explore this project's functionalities through a Jupyter Notebook which provides a summarized workflow for main features [`here`](demo.ipynb).
+<br/>
+
+Explore this project's functionalities through a Jupyter Notebook which provides a summarised workflow for main features [`here`](demo.ipynb).
 
 ## Datasets
 
