@@ -25,6 +25,8 @@ Our results support efforts towards automated multitemporal and global glacier m
 
 Explore this project's functionalities through a Jupyter Notebook which provides a summarised workflow for main features [`here`](demo.ipynb).
 
+THIS IS A CHANGE THAT MIGHT APPEAR AFTER PUBLISHING THE PAPER (E.G. CORRECTING THE URLS AND BIBTEX ENTRIES)...
+
 ## Datasets
 
 You can access the tile-based dataset that can be used to train a model and to assess its performance on it [here](https://bit.ly/3UgEDgA). 
