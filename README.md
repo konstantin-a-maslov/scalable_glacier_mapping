@@ -51,7 +51,7 @@ We recommend using the [Anaconda](https://www.anaconda.com/download) or [Minicon
 After installing one of them, one can use the `conda` package manager to install the required libraries in a new environment called `massive-tf` and activate it by running
 
 ```
-conda create -n massive-tf "tensorflow==2.11" h5py scikit-learn rioxarray geopandas jupyterlab tqdm matplotlib opencv -c conda-forge
+conda create -n massive-tf "tensorflow<2.16" h5py scikit-learn rioxarray geopandas jupyterlab tqdm matplotlib opencv -c conda-forge
 conda activate massive-tf
 ```
 
