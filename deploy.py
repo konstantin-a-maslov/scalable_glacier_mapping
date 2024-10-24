@@ -207,7 +207,7 @@ def main():
 
     probs /= args.n
 
-    del model
+    del model, features
     gc.collect()
 
     probs = probs[pad_height:pad_height + height, pad_width:pad_width + width, :]
