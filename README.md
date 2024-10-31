@@ -1,4 +1,4 @@
-# Globally Scalable Glacier Mapping by Deep Learning Matches Manual Delineation Accuracy
+# Globally Scalable Glacier Mapping by Deep Learning Matches Expert Delineation Accuracy
 
 [Konstantin A. Maslov](https://people.utwente.nl/k.a.maslov), [Claudio Persello](https://people.utwente.nl/c.persello), [Thomas Schellenberger](https://www.mn.uio.no/geo/english/people/aca/geohyd/thosche/), [Alfred Stein](https://people.utwente.nl/a.stein)
 
