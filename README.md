@@ -27,10 +27,12 @@ Explore this project's functionalities through a Jupyter Notebook which provides
 
 ## Datasets
 
+The datasets collected and analysed in the study are available via the [NIRD research data archive](https://doi.org/10.11582/2024.00168).
+Alternatively (although not recommended), you can access the data on Google Drive.
+To do so, please use the following links. 
 You can access the tile-based dataset that can be used to train a model and to assess its performance on it [here](https://bit.ly/3UgEDgA). 
 If you wish to try the code only, you may want to use a [demo dataset](https://bit.ly/49aVPIJ), which is just a 10% subsample of the main one. 
-For more challenging spatial and temporal generalisation tests, there is a [independent acquisition test dataset](https://bit.ly/48WUGoA) that contains completely different in space and time acquisitions from those in the tile-based dataset. 
-The datasets will be also possible to access in [DANS](https://dans.knaw.nl/en/), where they will be uploaded shortly. 
+For more challenging spatial and temporal generalisation tests, there is a [independent acquisition test dataset](https://bit.ly/48WUGoA) that contains completely different in space and time acquisitions from those in the tile-based dataset.  
 
 
 ## Installation 
