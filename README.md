@@ -2,7 +2,7 @@
 
 [Konstantin A. Maslov](https://people.utwente.nl/k.a.maslov), [Claudio Persello](https://people.utwente.nl/c.persello), [Thomas Schellenberger](https://www.mn.uio.no/geo/english/people/aca/geohyd/thosche/), [Alfred Stein](https://people.utwente.nl/a.stein)
 
-[[`Paper`](https://arxiv.org/abs/2401.15113)] [[`Datasets`](#datasets)] [[`BibTeX`](#citing)] 
+[[`Paper`](https://doi.org/10.1038/s41467-024-54956-x)] [[`Datasets`](#datasets)] [[`BibTeX`](#citing)] 
 
 <br/>
 
@@ -204,26 +204,17 @@ This software is licensed under the [GNU General Public License v2](LICENSE).
 
 To cite the paper/repository, please use the following bib entry. 
 
-<!-- TODO: Update BibTeX once published ```
-@article{towardsglobalglaciermapping2024,
-    title={Towards Global Glacier Mapping with Deep Learning and Open Earth Observation Data},
-    author={Maslov, Konstantin A. and Persello, Claudio and Schellenberger, Thomas and Stein, Alfred},
-    journal={},
-    year={2024},
-    volume={},
-    number={},
-    pages={},
-    doi={}
-}
-``` -->
 ```
-@article{scalableglaciermapping2024,
-    title = {Scalable Glacier Mapping using Deep Learning and Open Earth Observation Data Matches the Accuracy of Manual Delineation},
-    author = {Maslov, Konstantin A. and Persello, Claudio and Schellenberger, Thomas and Stein, Alfred},
-    doi = {10.48550/arXiv.2401.15113},    
-    url = {https://arxiv.org/abs/2401.15113},
-    year = {2024},
-    month = {1},
+@article{globallyscalableglaciermapping2025,
+    author={Maslov, Konstantin A. and Persello, Claudio and Schellenberger, Thomas and Stein, Alfred},
+    title={Globally scalable glacier mapping by deep learning matches expert delineation accuracy},
+    journal={Nature Communications},
+    year={2025},
+    volume={16},
+    pages={43},
+    issn={2041-1723},
+    doi={10.1038/s41467-024-54956-x},
+    url={https://doi.org/10.1038/s41467-024-54956-x}
 }
 ```
 
